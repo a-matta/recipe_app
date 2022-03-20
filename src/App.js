@@ -13,7 +13,8 @@ function App() {
     setIsLoading(true);
     try {
       const res = await fetch(API + query);
-      setRecipes(await res.json());
+      const jsonData = await res.json();
+      setRecipes(jsonData.meals);
     } catch (error) {
       console.log("Error,try again");
     } finally {
@@ -28,10 +29,14 @@ function App() {
   return (
     <div className="container">
       <h2>Recipe App</h2>
-      <SearchBar />
-      <RecipeCard />
+      <div className="recipes">
+        {recipes
+          ? recipes.map((recipe) => (
+              <RecipeCard key={recipe.idMeal} recipe={recipe} />
+            ))
+          : "No Recipes!"}
+      </div>
     </div>
   );
 }
-
 export default App;
