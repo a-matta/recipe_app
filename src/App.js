@@ -3,20 +3,22 @@ import "./App.css";
 import RecipeCard from "./components/RecipeCard";
 import SearchBar from "./components/SearchBar";
 
-const API = " https://www.themealdb.com/api/json/v1/1/search.php?s=";
+const API = "https://www.themealdb.com/api/json/v1/1/search.php?s=";
 function App() {
   const [isLoading, setIsLoading] = useState(false);
-  const [query, setIsquery] = useState("");
+  const [query, setQuery] = useState("");
   const [recipes, setRecipes] = useState([]);
 
   const searchRecipes = async () => {
     setIsLoading(true);
-    const url = API + query;
-    const res = await fetch(url);
-    const data = await res.json();
-    console.log(data);
-    setRecipes(data.meals);
-    setIsLoading(false);
+    try {
+      const res = await fetch(API + query);
+      setRecipes(await res.json());
+    } catch (error) {
+      console.log("Error,try again");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
