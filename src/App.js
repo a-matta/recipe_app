@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import RecipeCard from "./components/RecipeCard";
 import SearchBar from "./components/SearchBar";
@@ -10,12 +10,18 @@ function App() {
   const [recipes, setRecipes] = useState([]);
 
   const searchRecipes = async () => {
-    setIsLoading = true;
+    setIsLoading(true);
     const url = API + query;
     const res = await fetch(url);
-    const data = res.json();
+    const data = await res.json();
     console.log(data);
+    setRecipes(data.meals);
+    setIsLoading(false);
   };
+
+  useEffect(() => {
+    searchRecipes();
+  }, []);
 
   return (
     <div className="container">
